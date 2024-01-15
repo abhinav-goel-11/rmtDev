@@ -58,8 +58,7 @@ export function useActiveId() {
 export function useJobItems(searchText: string) {
   const [jobItems, setJobItems] = useState<jobItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const totalNumberOfResults = jobItems.length;
-  const jobItemsSliced = jobItems.slice(0, 7);
+
 
   useEffect(() => {
     if (!searchText) return;
@@ -72,7 +71,7 @@ export function useJobItems(searchText: string) {
     };
     fetchData();
   }, [searchText]);
-  return { jobItemsSliced, isLoading, totalNumberOfResults } as const;
+  return { jobItems, isLoading } as const;
 }
 
 export function useDebounce<T>(value: T, delay = 500): T {
