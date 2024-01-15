@@ -8,12 +8,12 @@ export type jobItem = {
 };
 
 export type jobItemExpanded = jobItem & {
-  companyURL:string,
-  coverImgURL:string,
-  description:string,
-  duration:string
-  location:string,
-  qualifications:string[],
-  reviews:string[],
-  salary:string
-}
+  companyURL: string;
+  coverImgURL: string;
+  description: string;
+  duration: string;
+  location: string;
+  qualifications: string[];
+  reviews: string[];
+  salary: string;
+};
