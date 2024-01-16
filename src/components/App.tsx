@@ -15,6 +15,7 @@ import PaginationControls from "./PaginationControls";
 import { useDebounce, useJobItems } from "../lib/hooks";
 import { Toaster } from "react-hot-toast";
 import { RESULTS_PER_PAGE } from "../lib/constants";
+import { SortBy } from "../lib/types";
 
 function App() {
   //states & custom hooks
@@ -22,21 +23,35 @@ function App() {
   const debouncedSearchText = useDebounce(searchText, 250);
   const { jobItems, isLoading } = useJobItems(debouncedSearchText);
   const [currentPage, setCurrentPage] = useState(1);
+  const [sortBy, setSorteBy] = useState<SortBy>("relevance");
   //computed states
 
   const totalNumberOfResults = jobItems?.length ?? 0;
   const totalNumberOfPages = totalNumberOfResults / RESULTS_PER_PAGE;
-  const jobItemsSliced =
-    jobItems?.slice(
+  const jobItemsSorted =
+    jobItems?.sort((a, b) => {
+      if (sortBy === "relevance") {
+        return b.relevanceScore - a.relevanceScore;
+      } else {
+        return a.daysAgo - b.daysAgo;
+      }
+    }) ?? [];
+  const jobItemsSortedandSliced =
+  jobItemsSorted.slice(
       (currentPage - 1) * RESULTS_PER_PAGE,
       currentPage * RESULTS_PER_PAGE
-    ) ?? [];
+    );
   const handleChangePage = (direction: "next" | "previous") => {
     if (direction === "previous") {
       setCurrentPage((prev) => prev - 1);
     } else if (direction === "next") {
       setCurrentPage((prev) => prev + 1);
     }
+  };
+
+  const handleChangeSortBy = (newSortBy: SortBy) => {
+    setCurrentPage(1);
+    setSorteBy(newSortBy);
   };
   return (
     <>
@@ -53,9 +68,9 @@ function App() {
         <Sidebar>
           <SidebarTop>
             <ResultsCount totalNumberOfResults={totalNumberOfResults} />
-            <SortingControls />
+            <SortingControls sortBy={sortBy} onClick={handleChangeSortBy} />
           </SidebarTop>
-          <JobList jobItems={jobItemsSliced} isLoading={isLoading} />
+          <JobList jobItems={jobItemsSortedandSliced} isLoading={isLoading} />
           <PaginationControls
             currentPage={currentPage}
             onClick={handleChangePage}
