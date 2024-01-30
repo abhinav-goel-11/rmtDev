@@ -18,5 +18,5 @@ export type jobItemExpanded = jobItem & {
   salary: string;
 };
 
-export type SortBy = "relevance" | "recent"
-export type PageDirection = "next" | "previous"
+export type SortBy = "relevance" | "recent";
+export type PageDirection = "next" | "previous";
