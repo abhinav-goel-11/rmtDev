@@ -1,25 +1,20 @@
-import { SortBy } from "../lib/types";
+import { useJobItemsContext } from "../lib/hooks";
 
-type SortingControlsProps = {
-  onClick: (newSortBy: SortBy) => void;
-  sortBy: SortBy;
-};
-export default function SortingControls({
-  onClick,
-  sortBy,
-}: SortingControlsProps) {
+
+export default function SortingControls() {
+  const {sortBy,handleChangeSortBy} = useJobItemsContext()
   return (
     <section className="sorting">
       <i className="fa-solid fa-arrow-down-short-wide"></i>
 
       <SortingButton
-        onClick={() => onClick("relevance")}
+        onClick={() => handleChangeSortBy("relevance")}
         isActive={sortBy === "relevance"}
       >
         Relevance
       </SortingButton>
       <SortingButton
-        onClick={() => onClick("recent")}
+        onClick={() => handleChangeSortBy("recent")}
         isActive={sortBy === "recent"}
       >
         Recent
