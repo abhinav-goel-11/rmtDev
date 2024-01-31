@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useMemo, useState } from "react";
 import { RESULTS_PER_PAGE } from "../lib/constants";
 import { useSearchQuery, useSearchTextContext } from "../lib/hooks";
 import { SortBy, PageDirection, jobItem } from "../lib/types";
@@ -32,17 +32,25 @@ export default function JobItemsContextProvider({
 
   const totalNumberOfResults = jobItems?.length ?? 0;
   const totalNumberOfPages = totalNumberOfResults / RESULTS_PER_PAGE;
-  const jobItemsSorted = [...(jobItems ?? [])]?.sort((a, b) => {
-    if (sortBy === "relevance") {
-      return b.relevanceScore - a.relevanceScore;
-    } else {
-      return a.daysAgo - b.daysAgo;
-    }
-  });
+  const jobItemsSorted = useMemo(
+    () =>
+      [...(jobItems ?? [])]?.sort((a, b) => {
+        if (sortBy === "relevance") {
+          return b.relevanceScore - a.relevanceScore;
+        } else {
+          return a.daysAgo - b.daysAgo;
+        }
+      }),
+    [jobItems, sortBy]
+  );
 
-  const jobItemsSortedandSliced = jobItemsSorted.slice(
-    (currentPage - 1) * RESULTS_PER_PAGE,
-    currentPage * RESULTS_PER_PAGE
+  const jobItemsSortedandSliced = useMemo(
+    () =>
+      jobItemsSorted.slice(
+        (currentPage - 1) * RESULTS_PER_PAGE,
+        currentPage * RESULTS_PER_PAGE
+      ),
+    [jobItemsSorted, currentPage]
   );
   const handleChangePage = (direction: PageDirection) => {
     if (direction === "previous") {
