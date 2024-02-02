@@ -2,13 +2,7 @@ export default function Footer() {
   return (
     <footer className="footer">
       <small>
-        <p>
-          © Copyright by{" "}
-          <a href="https://bytegrad.com" target="_blank">
-            ByteGrad.com
-          </a>
-          . Intended for learning or your portfolio.
-        </p>
+        <p>© Copyright by Abhinav Goel</p>
       </small>
 
       <p>
